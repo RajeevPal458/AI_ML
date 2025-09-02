@@ -1,0 +1,14 @@
+>python -m venv myenv
+>myenv\Scripts\activte
+>pip install fastapi uvicorn pyd
+>uvicorn main:app --reload
+
+===============
+query param, path param, 
+path param -> add     =Path(discription='',example='')
+query param -> 
+
+HTTPStatusCode
+raise HttpException(status_code=500, detail='')
+
+http://127.0.0.1:8000/docs

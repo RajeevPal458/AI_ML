@@ -1,0 +1,81 @@
+import numpy as np
+import pandas as pd
+import random
+import string
+
+# Handling missing data
+
+wine_data = pd.read_csv('../testFiles/winequality-red.csv', sep=';')
+
+
+
+wine_data = wine_data.mask((wine_data < 0.4) & (wine_data > 0),np.nan)
+
+
+
+wine_data = wine_data.mask( (wine_data > 0.5) & (wine_data < 1), np.nan)
+
+
+def generate_random_string():
+    length = random.randint(3, 10)
+    return ''.join( random.choices(string.ascii_letters, k=length))
+
+wine_data['random_string'] = [generate_random_string() for _ in range(len(wine_data))]
+
+#print(wine_data.head(50))
+
+wine_data.replace(0, np.nan, inplace=True)
+
+#print(wine_data.isnull().sum())
+
+#print(wine_data.isnull().tail(50))
+print("get type of random_string column")
+print(wine_data['random_string'].dtype)
+
+wine_data['random_string'] = wine_data['random_string'].astype('string')
+print("get type of random_string column")
+print(wine_data['random_string'].dtype)
+wine_data['random_string'] = wine_data['random_string'].str.len()
+print(wine_data.head(50))
+
+print(wine_data.isnull())
+print(wine_data.notnull())
+print(wine_data.notna())
+print(wine_data.isna())
+
+
+# DataFrame.fillna with 'method' is deprecated and will raise in a future version. Use obj.ffill() or obj.bfill() instead.
+
+FFILL = wine_data.ffill(inplace=False, limit=None)
+BFILL = wine_data.bfill(inplace=False, limit=None)
+
+print(FFILL)
+print(BFILL)
+print(FFILL.isnull().sum())
+
+print()
+
+print(BFILL.isnull().sum())
+print()
+
+CLEAN_DATA = wine_data.T.fillna(wine_data.median(axis=1), inplace=False).T
+
+
+print()
+
+CLEAN_DATA.replace([np.nan,0],1.0, inplace=True)
+print(CLEAN_DATA.isnull().sum())
+
+CLEAN_DATA.fillna(1.0, inplace=True)
+print(CLEAN_DATA.where(CLEAN_DATA.notnull()))
+print(CLEAN_DATA.isnull().sum())
+
+print()
+print("any null values in the DataFrame:")
+print(CLEAN_DATA[CLEAN_DATA.isnull().any(axis=1)])
+
+
+
+
+
+

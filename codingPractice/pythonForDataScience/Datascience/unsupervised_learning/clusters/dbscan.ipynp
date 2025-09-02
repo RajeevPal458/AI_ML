@@ -1,0 +1,109 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from collections import deque
+from enum import Enum
+
+# --------------------------
+# ENUM for Point Type Labels
+# --------------------------
+class PointType(Enum):
+    UNVISITED = 0
+    CORE = 1
+    BORDER = 2
+    NOISE = 3
+
+# --------------------------
+# Generate Sample Data
+# --------------------------
+from sklearn.datasets import make_moons
+X, _ = make_moons(n_samples=3000, noise=0.5, random_state=42)
+
+# --------------------------
+# DBSCAN Hyperparameters
+# --------------------------
+eps = 0.2
+min_pts = 5
+
+# --------------------------
+# Initialize data structures
+# --------------------------
+n_points = len(X)
+point_types = [PointType.UNVISITED] * n_points  # Track type of each point
+cluster_labels = [-1] * n_points                 # Track cluster assignment
+cluster_id = 0                                   # Start from cluster 0
+
+# --------------------------
+# Region query: find neighbors within eps
+# --------------------------
+def region_query(X, idx, eps):
+    neighbors = []
+    for i in range(len(X)):
+        if np.linalg.norm(X[idx] - X[i]) <= eps:
+            neighbors.append(i)
+    return neighbors
+
+# --------------------------
+# Expand cluster function
+# --------------------------
+def expand_cluster(X, idx, neighbors, cluster_id, eps, min_pts):
+    cluster_labels[idx] = cluster_id
+    point_types[idx] = PointType.CORE
+
+    queue = deque(neighbors)
+
+    while queue:
+        current_idx = queue.popleft()
+        
+        if point_types[current_idx] == PointType.UNVISITED:
+            current_neighbors = region_query(X, current_idx, eps)
+
+            if len(current_neighbors) >= min_pts:
+                point_types[current_idx] = PointType.CORE
+                queue.extend(current_neighbors)
+            else:
+                point_types[current_idx] = PointType.BORDER
+
+        if cluster_labels[current_idx] == -1:
+            cluster_labels[current_idx] = cluster_id
+
+# --------------------------
+# DBSCAN Main Loop
+# --------------------------
+for i in range(n_points):
+    if point_types[i] != PointType.UNVISITED:
+        continue
+
+    neighbors = region_query(X, i, eps)
+
+    if len(neighbors) < min_pts:
+        point_types[i] = PointType.NOISE
+    else:
+        expand_cluster(X, i, neighbors, cluster_id, eps, min_pts)
+        cluster_id += 1
+
+# --------------------------
+# Visualization
+# --------------------------
+plt.figure(figsize=(10, 6))
+
+# Define colors
+colors = plt.cm.tab10(np.linspace(0, 1, cluster_id))
+
+for i in range(n_points):
+    x, y = X[i]
+    label = cluster_labels[i]
+    ptype = point_types[i]
+
+    if ptype == PointType.NOISE:
+        plt.scatter(x, y, color='black', marker='x', label='Noise' if 'Noise' not in plt.gca().get_legend_handles_labels()[1] else "")
+    elif ptype == PointType.BORDER:
+        plt.scatter(x, y, color=colors[label], marker='s', label=f'Cluster {label} (Border)' if f'Cluster {label} (Border)' not in plt.gca().get_legend_handles_labels()[1] else "")
+    elif ptype == PointType.CORE:
+        plt.scatter(x, y, color=colors[label], marker='o', label=f'Cluster {label} (Core)' if f'Cluster {label} (Core)' not in plt.gca().get_legend_handles_labels()[1] else "")
+
+plt.title("Manual DBSCAN with Core, Border, Noise Points")
+plt.xlabel("X")
+plt.ylabel("Y")
+plt.legend()
+plt.grid(True)
+plt.show()

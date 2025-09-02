@@ -1,0 +1,16 @@
+What is semantic search?
+Semantic search is an advanced information retrieval method that focuses on understanding the intent and contextual meaning of a search query, rather than just matching keywords. It employs natural language processing (NLP) and machine learning techniques to interpret the nuances, synonyms, and relationships inherent in language.
+Check this article if you are interested to learn more.
+What is vector search?
+Vector search, on the other hand, is a technique that transforms words, sentences, or entire documents into vectors — numerical representations in a multidimensional space. These vectors capture the essence of the content, allowing for similarity comparisons based on their positions in this vector space.
+
+Semantic search is all about context and meaning. It employs a blend of natural language processing (NLP) techniques and understanding (NLU) to interpret the nuances, synonyms, and relationships inherent in language. The aim is to deliver search results that are not just textually similar but are meaningfully relevant to the user's search intent, even if the exact words used in the query aren't present in the content.
+Thanks to the semantic understanding embedded in the vectors, a search for "climate change effects" could return relevant documents that discuss "global warming impacts," even if the search doesn't use that exact phrase.
+Beyond this, semantic search can leverage rich representations of data, such as those found in knowledge graphs, to uncover deeper connections and insights. Knowledge graphs organize information into entities and their relationships, making it possible to query complex relationships or generate recommendations based on contextual understanding. For example, they can help in discovering how climate change impacts interact with economic factors.
+Moreover, semantic search often benefits from inference engines, which are used to derive logical conclusions from the available data. These engines, powered by advanced algorithms, enable systems to answer complex queries and make predictions based on a combination of explicit facts and inferred relationships. For instance, an inference engine could connect topics like "rising sea levels" and "coastal property insurance" to infer potential risks or financial implications, even if these links are not explicitly stated in the data.
+By extending its capabilities with such technologies, semantic search becomes an even more powerful tool, not only for retrieving meaningfully relevant results but also for supporting complex decision-making processes in fields like scientific research, healthcare, and enterprise knowledge management.
+Check out this article for more details on semantic search.
+
+====
+
+there is a person working as software engineer and he did his education from kanpur there was a collage - named as hbti but its name is changed now as hbtu his name is rajeev

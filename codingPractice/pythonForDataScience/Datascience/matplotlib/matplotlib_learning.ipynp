@@ -1,0 +1,210 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+x = np.linspace(0,10,100)
+y = np.sin(x)
+z = np.cos(x)
+# Create a simple plot set_xlim, set_ylim, set_xticks, set_yticks, set_xticklabels, set_yticklabels, axhline, axvline, fill_between, annotate, savefig
+fig = plt.figure()
+ax = fig.add_axes([0,0,1,1])
+ax.plot(x,y,c='red', label='sin(x)',alpha=0.5,marker='^',markersize=5,lw=5)
+ax.plot(x,z,c='green', label='cos(x)',alpha=0.5,marker='o',markersize=5,lw=5)
+ax.set_xlim(0,10)
+ax.set_ylim(-1,1)
+ax.set_xticks(np.arange(0,11,1))
+ax.set_yticks(np.arange(-1,2,0.5))
+ax.set_xticklabels(np.arange(0,11,1), rotation=45)
+ax.set_yticklabels(np.arange(-1,2,0.5), rotation=45)
+ax.grid()
+ax.axhline(0, color='black', lw=2)
+ax.axvline(4.8, color='red', lw=2)
+ax.fill_between(x,y,z, where=(y>z), color='gray', alpha=0.5)
+ax.fill_between(x,y,z, where=(y<z), color='blue', alpha=0.5)
+ax.text(5, 0.5, 'Intersection', fontsize=12, ha='center')
+ax.annotate('Local Max', xy=(1.57, 1), xytext=(2, 1.5),
+            arrowprops=dict(facecolor='black', shrink=0.05))
+ax.annotate('Local Min', xy=(4.71, -1), xytext=(5, -1.5),
+            arrowprops=dict(facecolor='black', shrink=0.05))
+
+ax.set_xlabel('X-axis')
+ax.set_ylabel('Y-axis')
+ax.set_title('Sine and Cosine Functions')
+ax.legend(['sin(x)', 'cos(x)'])
+plt.show()
+
+# Save the figure
+fig.savefig('sine_cosine.png', dpi=300, bbox_inches='tight')
+
+###############################################################3
+
+# practice subplots
+fig, axs = plt.subplots(2, 2, figsize=(10, 8), constrained_layout=True)
+axs[0, 0].plot(x, y, color='red', label='sin(x)')
+axs[0, 0].set_title('Sine Function')
+axs[0, 0].set_xlabel('X-axis')
+axs[0, 0].set_ylabel('Y-axis')
+axs[0, 0].legend()
+axs[0, 0].grid()
+axs[0, 1].plot(x, z, color='green', label='cos(x)')
+axs[0, 1].set_title('Cosine Function')
+axs[0, 1].set_xlabel('X-axis')
+axs[0, 1].set_ylabel('Y-axis')
+axs[0, 1].legend()
+axs[0, 1].grid()
+axs[1, 0].scatter(x, y, color='red', label='sin(x)')
+axs[1, 0].set_title('Sine Function Scatter Plot')
+
+axs[1, 0].set_xlabel('X-axis')
+axs[1, 0].set_ylabel('Y-axis')
+
+axs[1, 0].legend()
+axs[1, 0].grid()
+axs[1, 1].scatter(x, z, color='green', label='cos(x)')
+axs[1, 1].set_title('Cosine Function Scatter Plot')
+axs[1, 1].set_xlabel('X-axis')
+axs[1, 1].set_ylabel('Y-axis')
+axs[1, 1].legend()
+axs[1, 1].grid()
+
+plt.show()
+# Save the figure
+fig.savefig('sine_cosine_subplots.png', dpi=300, bbox_inches='tight')
+
+#=================================================================
+
+
+
+
+
+import matplotlib.pyplot as plt
+import numpy as np
+
+x = np.linspace(0, 10, 100)
+y = np.sin(x)
+
+fig, ax = plt.subplots()
+ax.plot(x, y)
+
+# Set axis limits 
+ax.set_xlim(0, 10)
+ax.set_ylim(-1.5, 1.5)
+
+# Set ticks and labels
+ax.set_xticks([0, 2, 4, 6, 8, 10])
+ax.set_xticklabels(['Zero', 'Two', 'Four', 'Six', 'Eight', 'Ten'])
+
+# Horizontal/vertical lines
+ax.axhline(0, color='gray', linestyle='--')
+ax.axvline(3.14, color='red', linestyle=':')
+
+# Fill area below curve
+ax.fill_between(x, y, where=(y > 0), color='green', alpha=0.3)
+
+# Annotate max point
+ax.annotate('Max', xy=(np.pi/2, 1), xytext=(2, 1.2),
+            arrowprops=dict(facecolor='blue', arrowstyle='->'))
+
+# Save the figure
+plt.savefig("sine_plot.png", dpi=300, bbox_inches='tight')
+plt.show()
+
+
+
+
+
+
+
+
+#===============================================================
+
+# Create a bar plot
+data = {'x': ['A', 'B', 'C', 'D'], 'y': [3, 7, 5, 6]}
+df = pd.DataFrame(data)
+fig, ax = plt.subplots()
+ax.bar(df['x'], df['y'], color='blue', alpha=0.7)
+ax.set_xlabel('Categories')
+ax.set_ylabel('Values')
+ax.set_title('Bar Plot Example')
+plt.show()
+# Save the figure
+fig.savefig('bar_plot.png', dpi=300, bbox_inches='tight')
+
+
+# Create a barh plot
+data = {'x': ['A', 'B', 'C', 'D'], 'y': [3, 7, 5, 6]}
+df = pd.DataFrame(data)
+fig, ax = plt.subplots()
+ax.barh(df['x'], df['y'], color='blue', alpha=0.7)  
+
+ax.set_xlabel('Values')
+ax.set_ylabel('Categories')
+ax.set_title('Horizontal Bar Plot Example')
+plt.show()
+# Save the figure
+fig.savefig('horizontal_bar_plot.png', dpi=300, bbox_inches='tight')
+
+
+# Create a histogram
+data = np.random.randn(1000)
+fig, ax = plt.subplots()
+ax.hist(data, bins=30, color='purple', alpha=0.7)
+ax.set_xlabel('Value')
+ax.set_ylabel('Frequency')
+ax.set_title('Histogram Example')
+plt.show()
+# Save the figure
+fig.savefig('histogram.png', dpi=300, bbox_inches='tight')
+
+
+# Create a pie chart
+labels = ['A', 'B', 'C', 'D']
+sizes = [15, 30, 45, 10]
+fig, ax = plt.subplots()
+ax.pie(sizes, labels=labels, autopct='%1.1f%%', startangle=90, colors=['red', 'blue', 'green', 'orange'])
+ax.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
+ax.set_title('Pie Chart Example')
+plt.show()
+# Save the figure
+fig.savefig('pie_chart.png', dpi=300, bbox_inches='tight')
+
+# Create a box plot
+data = np.random.randn(100, 4)
+fig, ax = plt.subplots()
+ax.boxplot(data, patch_artist=True, notch=True, vert=0)
+ax.set_xlabel('Value')
+ax.set_ylabel('Categories')
+ax.set_title('Box Plot Example')
+plt.show()
+# Save the figure
+fig.savefig('box_plot.png', dpi=300, bbox_inches='tight')
+
+# Create a Scatter plot
+x = np.random.rand(100)
+y = np.random.rand(100)
+fig, ax = plt.subplots()
+ax.scatter(x, y, c='blue', alpha=0.5)
+ax.set_xlabel('X-axis')
+ax.set_ylabel('Y-axis')
+ax.set_title('Scatter Plot Example')
+plt.show()
+# Save the figure
+fig.savefig('scatter_plot.png', dpi=300, bbox_inches='tight')
+# Create a 3D plot
+from mpl_toolkits.mplot3d import Axes3D
+fig = plt.figure()
+ax = fig.add_subplot(111, projection='3d')
+x = np.random.rand(100)
+y = np.random.rand(100)
+z = np.random.rand(100)
+ax.scatter(x, y, z, c='red', marker='o')
+ax.set_xlabel('X-axis')
+ax.set_ylabel('Y-axis')
+ax.set_zlabel('Z-axis')
+ax.set_title('3D Scatter Plot Example')
+plt.show()
+# Save the figure
+fig.savefig('3d_scatter_plot.png', dpi=300, bbox_inches='tight')
+
+
+

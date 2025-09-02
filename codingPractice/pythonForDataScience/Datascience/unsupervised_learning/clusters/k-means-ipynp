@@ -1,0 +1,84 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+# --------------------------
+# STEP 1: Create synthetic data
+# --------------------------
+np.random.seed(42)  # for reproducibility
+
+# Generate 2D data around three centers
+data1 = np.random.randn(100, 2) + [2, 2]
+data2 = np.random.randn(100, 2) + [8, 3]
+data3 = np.random.randn(100, 2) + [5, 8]
+
+# Combine the data into one dataset
+X = np.vstack((data1, data2, data3))
+
+# --------------------------
+# STEP 2: Choose K and initialize centroids
+# --------------------------
+K = 3  # number of clusters
+n_samples, n_features = X.shape
+
+# Randomly select K unique points as initial centroids
+random_indices = np.random.choice(n_samples, K, replace=False)
+centroids = X[random_indices]
+
+# --------------------------
+# STEP 3: Define helper function to compute distances
+# --------------------------
+def compute_distance(a, b):
+    # Returns the Euclidean distance between two vectors
+    return np.sqrt(np.sum((a - b)**2))
+
+# --------------------------
+# STEP 4: Run the K-means algorithm
+# --------------------------
+max_iters = 100
+for iteration in range(max_iters):
+    # Create a list to store which points belong to which cluster
+    clusters = [[] for _ in range(K)]
+
+    # --------------------------
+    # Assignment Step: Assign points to the closest centroid
+    # --------------------------
+    for point in X:
+        distances = [compute_distance(point, centroid) for centroid in centroids]
+        closest_idx = np.argmin(distances)
+        clusters[closest_idx].append(point)
+
+    # --------------------------
+    # Store old centroids to check for convergence
+    # --------------------------
+    old_centroids = centroids.copy()
+
+    # --------------------------
+    # Update Step: Recompute the centroids
+    # --------------------------
+    for idx in range(K):
+        cluster_points = np.array(clusters[idx])
+        if len(cluster_points) > 0:
+            centroids[idx] = np.mean(cluster_points, axis=0)
+
+    # --------------------------
+    # Convergence Check
+    # --------------------------
+    diff = np.sum((centroids - old_centroids)**2)
+    if diff < 1e-6:
+        print(f"Converged at iteration {iteration}")
+        break
+
+# --------------------------
+# STEP 5: Visualize the final clusters
+# --------------------------
+colors = ['r', 'g', 'b']
+for idx, cluster in enumerate(clusters):
+    cluster = np.array(cluster)
+    plt.scatter(cluster[:, 0], cluster[:, 1], c=colors[idx], label=f'Cluster {idx+1}')
+plt.scatter(centroids[:, 0], centroids[:, 1], c='black', marker='X', s=200, label='Centroids')
+plt.title("K-Means Clustering (Manual Implementation)")
+plt.xlabel("Feature 1")
+plt.ylabel("Feature 2")
+plt.legend()
+plt.grid(True)
+plt.show()

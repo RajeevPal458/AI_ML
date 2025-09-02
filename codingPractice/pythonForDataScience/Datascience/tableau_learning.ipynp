@@ -1,0 +1,30 @@
+# I want to learn tableau data visualization and how to use it for data analysis. I want to learn about the different types of charts and graphs that can be created in Tableau, as well as how to customize them. I also want to learn about the different data sources that can be connected to Tableau, and how to prepare and clean data for analysis. Additionally, I want to learn about Tableau's features for creating dashboards and stories, and how to share and publish visualizations online. Finally, I want to learn about best practices for data visualization and how to effectively communicate insights from data using Tableau.
+
+# Lets start data visualization with tableau
+# Tableau is a powerful data visualization tool that allows users to create interactive and shareable dashboards. It connects to various data sources and provides a wide range of visualization options. Below are some key concepts and features of Tableau that you should learn about:
+
+# draw charts and graphs in tableau
+# 1. **Connecting to Data Sources**: Tableau can connect to various data sources such as Excel, SQL databases, cloud services, and more. Learn how to connect to different data sources and import data into Tableau.
+
+#
+# 2. **Data Preparation and Cleaning**: Before visualizing data, it is essential to clean and prepare it. Tableau provides features for data cleaning, such as removing duplicates, filtering data, and creating calculated fields.
+# Learn how to use these features to prepare your data for analysis.
+
+#
+# 3. **Creating Visualizations**: Tableau offers a wide range of visualization options, including bar charts, line charts, scatter plots, heat maps, and more. Learn how to create different types of visualizations and customize them to suit your needs.
+# You can also learn about the "Show Me" feature, which suggests the best visualization type based on the data you select.
+#
+#   4. **Using Filters and Parameters**: Filters allow you to focus on specific data points in your visualizations. Learn how to use filters to narrow down your data and create more meaningful insights.
+# Parameters allow users to input values that can change the behavior of calculations and filters. Learn how to create and use parameters in Tableau.
+
+#
+# 5. **Creating Dashboards**: Dashboards are collections of multiple visualizations that provide a comprehensive view of your data. Learn how to create and customize dashboards, add interactivity, and arrange visualizations for better storytelling.
+# You can also learn about using actions to create interactivity between different visualizations on the dashboard.
+
+#
+# 6. **Creating Stories**: Tableau allows you to create stories that combine visualizations and text to convey a narrative. Learn how to create stories in Tableau and use them to present your findings effectively.
+#
+# 7. **Sharing and Publishing**: Once you have created your visualizations and dashboards, you can share them with others. Learn how to publish your work to Tableau Server or Tableau Public, and understand the differences between the two.
+# You can also learn about exporting visualizations as images or PDFs for offline sharing.
+
+

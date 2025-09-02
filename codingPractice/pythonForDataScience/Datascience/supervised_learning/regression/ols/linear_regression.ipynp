@@ -1,0 +1,139 @@
+# 📌 Step 1: Import Libraries
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.datasets import fetch_california_housing
+from sklearn.linear_model import LinearRegression
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import mean_squared_error, r2_score
+from sklearn.preprocessing import StandardScaler
+from sklearn.pipeline import make_pipeline
+
+# 📌 Step 2: Load California Housing Dataset
+data = fetch_california_housing()
+X = data.data     # Features
+y = data.target   # Target: Median house value
+
+# Let's use only 1 feature for visualization: 'AveRooms' (index 3)
+X = X[:, [3]]  # Average number of rooms per household
+
+# 📌 Step 3: Train/Test Split
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# 📌 Step 4: Define and Train Linear Regression Model
+model = make_pipeline(
+    StandardScaler(),                # Normalize input features
+    LinearRegression()
+)
+model.fit(X_train, y_train)
+
+# 📌 Step 5: Predict on Test Data
+y_pred = model.predict(X_test)
+
+# 📌 Step 6: Evaluate Model
+mse = mean_squared_error(y_test, y_pred)
+r2 = r2_score(y_test, y_pred)
+
+print("✅ Mean Squared Error (MSE):", mse)
+print("✅ R^2 Score:", r2)
+
+# 📌 Step 7: Visualize Results
+plt.figure(figsize=(10,6))
+plt.scatter(X_test, y_test, color='blue', label='Actual', alpha=0.5)
+plt.plot(X_test, y_pred, color='red', label='Predicted Line', linewidth=2)
+plt.xlabel('Average Rooms per Household')
+plt.ylabel('Median House Value')
+plt.title('Linear Regression - California Housing')
+plt.legend()
+plt.grid(True)
+plt.show()
+
+
+
+
+import numpy as np
+
+# Feature matrix (with bias term)
+X = np.array([
+    [1, 1],
+    [1, 2],
+    [1, 3],
+    [1, 4]
+])  # Shape: (4, 2) -> 1 bias + 1 feature
+
+# Target values
+y = np.array([2, 3, 6, 11]).reshape(-1, 1)  # Shape: (4, 1)
+
+# Regularization parameter
+lmbda = 1.0
+
+# Identity matrix (don’t regularize bias term)
+I = np.eye(X.shape[1])
+I[0, 0] = 0  # Don’t penalize bias term
+
+# Ridge Regression formula
+XtX = X.T @ X
+ridge_term = XtX + lmbda * I
+Xty = X.T @ y
+
+beta = np.linalg.inv(ridge_term) @ Xty
+print("Ridge coefficients:", beta.ravel())
+
+
+
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.linear_model import LinearRegression, Ridge, Lasso
+from sklearn.metrics import mean_squared_error
+from sklearn.preprocessing import PolynomialFeatures
+from sklearn.pipeline import make_pipeline
+import seaborn as sns
+
+# Set seed for reproducibility
+np.random.seed(42)
+
+# Simulate data: a polynomial trend with some outliers
+X = np.linspace(0, 10, 100)
+y = 0.5 * X**3 - 4 * X**2 + 6 * X + 10 + np.random.normal(0, 10, size=X.shape)
+
+# Add a few outliers
+y[[10, 20, 30]] += [100, -120, 80]
+
+# Reshape X for sklearn
+X = X.reshape(-1, 1)
+
+# Fit OLS (Ordinary Least Squares) Linear Regression
+poly3 = PolynomialFeatures(degree=3)
+model_ols = make_pipeline(poly3, LinearRegression())
+model_ols.fit(X, y)
+y_pred_ols = model_ols.predict(X)
+
+# Fit Ridge Regression
+model_ridge = make_pipeline(poly3, Ridge(alpha=10))
+model_ridge.fit(X, y)
+y_pred_ridge = model_ridge.predict(X)
+
+# Fit Lasso Regression
+model_lasso = make_pipeline(poly3, Lasso(alpha=1.0, max_iter=10000))
+model_lasso.fit(X, y)
+y_pred_lasso = model_lasso.predict(X)
+
+# Plotting
+plt.figure(figsize=(14, 6))
+plt.scatter(X, y, color='gray', label='Data with outliers')
+plt.plot(X, y_pred_ols, label='OLS Prediction', color='blue')
+plt.plot(X, y_pred_ridge, label='Ridge Prediction', color='green')
+plt.plot(X, y_pred_lasso, label='Lasso Prediction', color='red')
+plt.legend()
+plt.title("Polynomial Regression with OLS, Ridge, and Lasso")
+plt.xlabel("X")
+plt.ylabel("y")
+plt.grid(True)
+plt.show()
+
+# Calculate and show MSE
+mse_ols = mean_squared_error(y, y_pred_ols)
+mse_ridge = mean_squared_error(y, y_pred_ridge)
+mse_lasso = mean_squared_error(y, y_pred_lasso)
+
+mse_ols, mse_ridge, mse_lasso

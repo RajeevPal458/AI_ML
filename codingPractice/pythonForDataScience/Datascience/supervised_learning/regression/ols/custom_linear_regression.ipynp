@@ -1,0 +1,115 @@
+import numpy as np
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.datasets import load_diabetes
+from sklearn.metrics import root_mean_squared_error, r2_score
+import matplotlib.pyplot as plt
+# Step 4: Define custom linear regressor (supports only 1 feature for now)
+class MyLinearRegressor:
+    def __init__(self):
+        self.m = None
+        self.b = None
+
+    def fit(self, X, y):
+        # Only support 1D (single feature) for now
+        if isinstance(X, pd.DataFrame):
+            if X.shape[1] != 1:
+                raise ValueError("MyLinearRegressor supports only 1 feature. Pass a single-column DataFrame.")
+            X = X.iloc[:, 0]
+        elif isinstance(X, pd.Series):
+            pass
+        else:
+            raise TypeError("X must be a pandas Series or single-column DataFrame.")
+        
+        print(f"x fit==========type:{type(X)}")
+
+
+        print(f"y fit==============type:{type(y)}")
+
+        # Calculate means
+        x_mean = X.mean()
+        y_mean = y.mean()
+
+        # Compute slope (m) and intercept (b)
+        numerator = ((X - x_mean) * (y - y_mean)).sum()
+        denominator = ((X - x_mean) ** 2).sum()
+
+        self.m = numerator / denominator
+        self.b = y_mean - self.m * x_mean
+
+        print(f"Fitted model: y = {self.m:.4f}x + {self.b:.4f}")
+
+    def predict(self, X):
+        if self.m is None or self.b is None:
+            raise ValueError("Model is not fitted yet.")
+        if isinstance(X, pd.DataFrame):
+            if X.shape[1] != 1:
+                raise ValueError("MyLinearRegressor supports only 1 feature.")
+            X = X.iloc[:, 0]
+        elif isinstance(X, pd.Series):
+            pass
+        else:
+            raise TypeError("X must be a pandas Series or single-column DataFrame.")
+        
+        print(f"x predict==========type:{type(X)}")
+        return self.m * X + self.b
+
+# Sample data
+X_train = [1, 2, 3, 4, 5]
+y_train = [2, 4, 5, 4, 5]
+
+diabetes  = load_diabetes()
+df = pd.DataFrame(diabetes .data,columns=diabetes.feature_names)
+df['target'] = diabetes.target
+print(df.shape)
+
+x = df.iloc[:,0:-1]
+y = df.iloc[:,-1]
+
+x_train,x_test,y_train,y_test = train_test_split(x,y,test_size=0.2,random_state=42)
+
+print(f"x train==========type:{type(x_train)}")
+print(type(y_train))
+
+print(f"x test ==============type:{type(x_test)}")
+print(type(y_test))
+
+# Step 5: Use only one feature (e.g., 'bmi') for this simple regressor
+feature_name = 'bmi'
+X_train1 = x_train[[feature_name]]  # double bracket returns a DataFrame
+X_test1 = x_test[[feature_name]]
+
+# Step 6: Train the model
+model = MyLinearRegressor()
+model.fit(X_train1, y_train)
+
+# Step 7: Predict on test data
+predictions = model.predict(X_test1)
+
+sample =pd.concat([X_test1[0:5], y_test[0:5]],axis=1)
+print(sample)
+# Show predictions
+print("\nSample predictions on test set:")
+print(predictions.head())
+
+rmse = root_mean_squared_error(y_test,predictions)
+print(f"rmse  {rmse}")
+
+r2score = r2_score(y_test,predictions)
+print(f"rmse  {r2score}")
+
+
+# Scatter plot of training data
+plt.scatter(X_train1, y_train, c='blue', label='Train Data')
+
+# Line plot of predictions on test data (red line)
+plt.scatter(X_test1, y_test, c='green', label='Actual Test Data')  # Optional
+plt.plot(X_test1, predictions, c='red', label='Prediction Line', linewidth=2)
+
+# Labels and title
+plt.title("Linear Regression: Training + Test Prediction")
+plt.xlabel(X_train1.columns[0])  # the feature name
+plt.ylabel("Target")
+plt.legend()
+plt.grid(True)
+plt.show()

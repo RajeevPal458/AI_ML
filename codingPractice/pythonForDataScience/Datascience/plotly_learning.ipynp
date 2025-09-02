@@ -1,0 +1,291 @@
+# practice plotly all types of charts
+# import libraries
+import plotly.express as px
+import plotly.graph_objects as go
+import pandas as pd
+import numpy as np
+import plotly.figure_factory as ff
+import plotly.subplots as sp
+import plotly.io as pio
+import plotly.colors as pc
+import plotly
+from plotly.subplots import make_subplots
+
+
+# set plotly to offline mode
+import plotly.offline as pyo
+pyo.init_notebook_mode()
+pio.renderers.default = 'notebook_connected'  # for Jupyter Notebook
+pio.renderers.default = 'browser'  # for Jupyter Notebook
+pio.renderers.default = 'png'  # for Jupyter Notebook
+pio.renderers.default = 'svg'  # for Jupyter Notebook
+pio.renderers.default = 'pdf'  # for Jupyter Notebook
+pio.renderers.default = 'jpeg'  # for Jupyter Notebook
+pio.renderers.default = 'plotly_mimetype+notebook'  # for Jupyter Notebook
+pio.renderers.default = 'plotly_mimetype+notebook_connected'  # for Jupyter Notebook
+pio.renderers.default = 'plotly_mimetype+notebook_connected'  # for Jupyter Notebook
+
+
+#charts
+# 1. Scatter plot
+df = px.data.iris()
+fig = px.scatter(df, x='sepal_width', y='sepal_length', color='species', size='petal_length', hover_name='species')
+fig.show()
+# 2. Line plot
+df = px.data.gapminder().query("country == 'Canada'")
+fig = px.line(df, x='year', y='pop', title='Population of Canada over the years')
+fig.show()
+
+# 3. Bar Pie Chart
+df = px.data.tips()
+fig = px.pie(df, values='total_bill', names='day', title='Total Bill by Day')
+fig.show()
+# 4. Histogram
+df = px.data.tips()
+fig = px.histogram(df, x='total_bill', nbins=20, title='Histogram of Total Bill')
+fig.show()
+# 5. Box plot
+df = px.data.tips()
+fig = px.box(df, x='day', y='total_bill', title='Box Plot of Total Bill by Day')
+fig.show()
+# 6. Violin plot
+df = px.data.tips()
+fig = px.violin(df, x='day', y='total_bill', box=True, points='all', title='Violin Plot of Total Bill by Day')
+fig.show()
+# 7. Heatmap
+df = px.data.iris()
+fig = px.density_heatmap(df, x='sepal_width', y='sepal_length', z='petal_length', title='Heatmap of Iris Dataset')
+fig.show()
+# 8. Area chart
+df = px.data.gapminder().query("country == 'Canada'")
+fig = px.area(df, x='year', y='pop', title='Area Chart of Population of Canada over the years')
+fig.show()
+# 9. Bubble chart
+df = px.data.tips()
+fig = px.scatter(df, x='total_bill', y='tip', size='size', color='day', hover_name='day', title='Bubble Chart of Tips')
+fig.show()
+# 10. Sunburst chart
+df = px.data.tips()
+fig = px.scatter(df, x='total_bill', y='tip', size='size', color='day', hover_name='day', title='Bubble Chart of Tips')
+fig.show()
+# 11. Treemap chart
+df = px.data.tips()
+fig = px.treemap(df, path=['day', 'time'], values='total_bill', title='Treemap of Total Bill by Day and Time')
+fig.show()
+
+
+# 12. Sankey diagram
+df = px.data.tips()
+fig = go.Figure(data=[go.Sankey(
+    node=dict(
+        pad=15,
+        thickness=20,
+        line=dict(color='black', width=0.5),
+        label=["A", "B", "C", "D", "E", "F"]
+    ),
+    link=dict(
+        source=[0, 1, 2],  # indices correspond to labels, e.g., "A", "B", "C"
+        target=[3, 4, 5],
+        value=[8, 4, 2]
+    )
+)])
+fig.update_layout(title_text='Sankey Diagram of Tips', font_size=10)
+fig.show()
+
+
+# 13. Funnel chart
+df = px.data.tips()
+fig = px.funnel(df, x='day', y='total_bill', title='Funnel Chart of Total Bill by Day')
+fig.show()
+
+# 14. Waterfall chart
+df = px.data.tips()
+fig = go.Figure(go.Waterfall(
+    name="Total Bill",
+    x=df['day'],
+    y=df['total_bill']
+))
+fig.update_layout(title='Waterfall Chart of Total Bill by Day')
+fig.show()
+
+
+# 15. Polar chart
+df = px.data.tips()
+fig = px.bar_polar(df, r='total_bill', theta='day', color='time', title='Polar Chart of Total Bill by Day and Time')
+fig.show()
+
+# 16. Polar chart with scatter plot
+df = px.data.tips()
+fig = px.scatter_polar(df, r='total_bill', theta='day', color='time', title='Polar Chart with Scatter Plot')
+fig.show()
+# 17. Polar chart with line plot
+df = px.data.tips()
+fig = px.line_polar(df, r='total_bill', theta='day', color='time', title='Polar Chart with Line Plot')
+fig.show()
+# 18. Polar chart with bar plot
+df = px.data.tips()
+fig = px.bar_polar(df, r='total_bill', theta='day', color='time', title='Polar Chart with Bar Plot')
+fig.show()
+# 19. Polar chart with area plot
+df = px.data.tips()
+fig = px.scatter_polar(df, r='total_bill', theta='day', color='time', title='Polar Chart with Scatter Plot')
+fig.show()
+
+# 20. Polar chart with histogram
+df = px.data.tips()
+fig = px.scatter_polar(df, r='total_bill', theta='day', color='time', title='Polar Chart with Scatter Plot')
+fig.show()
+
+# Draw the charts using plotly.graph_objects
+# 1. Scatter plot
+df = px.data.iris()
+fig = go.Figure(data=go.Scatter(x=df['sepal_width'], y=df['sepal_length'], mode='markers', marker=dict(size=df['petal_length'], color=df['species'])))
+fig.update_layout(title='Scatter Plot of Iris Dataset', xaxis_title='Sepal Width', yaxis_title='Sepal Length')
+fig.show()
+# 2. Line plot
+df = px.data.gapminder().query("country == 'Canada'")
+fig = go.Figure(data=go.Scatter(x=df['year'], y=df['pop'], mode='lines+markers'))   
+fig.update_layout(title='Population of Canada over the years', xaxis_title='Year', yaxis_title='Population')
+fig.show()
+# 3. Bar plot
+df = px.data.tips()
+fig = go.Figure(data=go.Bar(x=df['day'], y=df['total_bill']))
+fig.update_layout(title='Bar Plot of Total Bill by Day', xaxis_title='Day', yaxis_title='Total Bill')
+fig.show()
+# 4. Pie chart
+df = px.data.tips()
+fig = go.Figure(data=go.Pie(labels=df['day'], values=df['total_bill']))
+fig.update_layout(title='Pie Chart of Total Bill by Day')
+fig.show()
+
+
+# Draw the charts using plotly.figure_factory
+# 1. Scatter plot
+df = px.data.iris()
+fig = ff.create_scatterplotmatrix(df, diag='histogram', index='species', title='Scatter Plot Matrix of Iris Dataset')
+fig.show()
+# 2. Line plot
+df = px.data.gapminder().query("country == 'Canada'")
+fig = ff.create_line(df, x='year', y='pop', title='Population of Canada over the years')
+fig.show()
+# 3. Bar plot
+df = px.data.tips()
+fig = ff.create_bar(df, x='day', y='total_bill', title='Bar Plot of Total Bill by Day')
+fig.show()
+# 4. Pie chart
+df = px.data.tips()
+fig = ff.create_pie(df, labels='day', values='total_bill', title='Pie Chart of Total Bill by Day')
+fig.show()
+# 5. Histogram
+df = px.data.tips()
+fig = ff.create_histogram(df, x='total_bill', nbins=20, title='Histogram of Total Bill')
+fig.show()
+
+
+# Draw the charts using plotly.subplots
+# 1. Scatter plot
+df = px.data.iris()
+fig = make_subplots(rows=1, cols=1)
+fig.add_trace(go.Scatter(x=df['sepal_width'], y=df['sepal_length'], mode='markers', marker=dict(size=df['petal_length'], color=df['species']))) 
+fig.update_layout(title='Scatter Plot of Iris Dataset', xaxis_title='Sepal Width', yaxis_title='Sepal Length')
+fig.show()
+# 2. Line plot
+df = px.data.gapminder().query("country == 'Canada'")
+fig = make_subplots(rows=1, cols=1)
+fig.add_trace(go.Scatter(x=df['year'], y=df['pop'], mode='lines+markers'))
+fig.update_layout(title='Population of Canada over the years', xaxis_title='Year', yaxis_title='Population')
+fig.show()
+# 3. Bar plot
+df = px.data.tips()
+fig = make_subplots(rows=1, cols=1)
+fig.add_trace(go.Bar(x=df['day'], y=df['total_bill']))
+fig.update_layout(title='Bar Plot of Total Bill by Day', xaxis_title='Day', yaxis_title='Total Bill')
+fig.show()
+# 4. Pie chart
+df = px.data.tips()
+fig = make_subplots(rows=1, cols=1)
+fig.add_trace(go.Pie(labels=df['day'], values=df['total_bill']))
+fig.update_layout(title='Pie Chart of Total Bill by Day')
+fig.show()
+# 5. Histogram
+df = px.data.tips()
+
+fig = make_subplots(rows=1, cols=1)
+fig.add_trace(go.Histogram(x=df['total_bill'], nbinsx=20))
+fig.update_layout(title='Histogram of Total Bill')
+fig.show()
+
+# draw chars using plotly.colors
+# 1. Scatter plot
+df = px.data.iris()
+fig = px.scatter(df, x='sepal_width', y='sepal_length', color='species', color_discrete_sequence=px.colors.qualitative.Plotly)
+fig.update_layout(title='Scatter Plot of Iris Dataset', xaxis_title='Sepal Width', yaxis_title='Sepal Length')
+fig.show()
+# 2. Bar plot
+df = px.data.tips()
+fig = px.bar(df, x='day', y='total_bill', color='time', color_discrete_sequence=px.colors.qualitative.Plotly)
+fig.update_layout(title='Bar Plot of Total Bill by Day', xaxis_title='Day', yaxis_title='Total Bill')   
+fig.show()
+# 3. Pie chart
+df = px.data.tips()
+fig = px.pie(df, values='total_bill', names='day', color='time', color_discrete_sequence=px.colors.qualitative.Plotly)
+fig.update_layout(title='Pie Chart of Total Bill by Day')
+fig.show()
+
+
+##########################################################################
+
+#can you explain me uses of above all types of charts in detail and when to use them?
+# 1. Scatter Plot: Used to visualize the relationship between two continuous variables. It helps identify trends, clusters, and outliers in the data.
+# 2. Line Plot: Used to display data points in a time series or continuous data. It is useful for showing trends over time.
+
+# 3. Bar Plot: Used to compare categorical data. It is useful for showing the frequency or value of different categories.
+# 4. Pie Chart: Used to show the proportion of different categories in a whole. It is useful for displaying relative sizes of parts to a whole.
+# 5. Histogram: Used to show the distribution of a continuous variable. It is useful for understanding the frequency distribution of data points.
+# 6. Box Plot: Used to show the distribution of a continuous variable through its quartiles. It is useful for identifying outliers and understanding the spread of data.
+# 7. Violin Plot: Similar to a box plot but also shows the kernel density estimation of the data. It is useful for understanding the distribution and density of data points.
+# 8. Heatmap: Used to show the relationship between two variables through color intensity. It is useful for visualizing correlations and patterns in data.
+# 9. Area Chart: Used to show the cumulative total of a variable over time. It is useful for visualizing trends and changes in data.
+# 10. Bubble Chart: Similar to a scatter plot but adds a third variable represented by the size of the bubbles. It is useful for visualizing relationships between three variables.
+# 11. Sunburst Chart: Used to visualize hierarchical data through concentric circles. It is useful for showing the breakdown of data into categories and subcategories.
+# 12. Treemap Chart: Similar to a sunburst chart but uses rectangles to represent hierarchical data. It is useful for showing the proportion of categories within a whole.
+# 13. Sankey Diagram: Used to show the flow of data between different categories. It is useful for visualizing relationships and connections in data.
+# 14. Funnel Chart: Used to show the stages of a process and the drop-off at each stage. It is useful for visualizing conversion rates and sales funnels.
+# 15. Waterfall Chart: Used to show the cumulative effect of sequentially introduced positive or negative values. It is useful for visualizing changes in data over time.
+# 16. Polar Chart: Used to visualize data in a circular format. It is useful for showing relationships between variables in a radial format.
+# 17. Polar Chart with Scatter Plot: Similar to a polar chart but adds scatter points to represent data. It is useful for visualizing relationships in a circular format.
+# 18. Polar Chart with Line Plot: Similar to a polar chart but adds lines to represent data. It is useful for visualizing trends in a circular format.
+# 19. Polar Chart with Bar Plot: Similar to a polar chart but adds bars to represent data. It is useful for visualizing categorical data in a circular format.
+# 20. Polar Chart with Area Plot: Similar to a polar chart but adds area to represent data. It is useful for visualizing cumulative data in a circular format.
+# 21. Polar Chart with Histogram: Similar to a polar chart but adds histogram bars to represent data. It is useful for visualizing the distribution of data in a circular format.
+# 22. Scatter Plot Matrix: Used to visualize the relationships between multiple variables. It is useful for identifying trends and correlations in multidimensional data.
+# 23. Line Plot Matrix: Similar to a scatter plot matrix but uses lines to represent data. It is useful for visualizing trends and relationships in multidimensional data.
+# 24. Bar Plot Matrix: Similar to a scatter plot matrix but uses bars to represent data. It is useful for comparing multiple variables in a grid format.
+
+
+# can you explain me uses of above all different libraries like plotly (express, graph_objects, figure_factory, subplots, colors, io) in detail and when to use them?
+# 1. Plotly Express: A high-level interface for creating interactive visualizations quickly and easily. It is useful for creating simple plots with minimal code.
+# 2. Plotly Graph Objects: A low-level interface for creating complex visualizations with more control over the layout and design. It is useful for creating custom plots and adding interactivity.
+# 3. Plotly Figure Factory: A module for creating complex visualizations like scatter plot matrices, histograms, and more. It is useful for creating specialized plots with less code.
+# 4. Plotly Subplots: A module for creating multiple plots in a single figure. It is useful for comparing different visualizations side by side.
+# 5. Plotly Colors: A module for working with colors in Plotly visualizations. It is useful for customizing the color schemes of plots and creating color scales.
+# 6. Plotly IO: A module for handling input and output of Plotly figures. It is useful for saving and exporting plots in different formats (e.g., PNG, SVG, PDF).
+# 7. Plotly Offline: A module for rendering Plotly plots offline without requiring an internet connection. It is useful for creating visualizations in environments without internet access.
+# 8. Plotly Online: A module for rendering Plotly plots online with internet access. It is useful for creating and sharing visualizations on the web.
+# 9. Plotly Dash: A web application framework for building interactive web applications using Plotly visualizations. It is useful for creating dashboards and data-driven applications.
+# 10. Plotly Widgets: A module for creating interactive widgets in Jupyter notebooks using Plotly visualizations. It is useful for creating interactive data exploration tools.
+# 11. Plotly Maps: A module for creating interactive maps using Plotly visualizations. It is useful for visualizing geospatial data and creating map-based visualizations.
+# 12. Plotly Animation: A module for creating animated visualizations using Plotly. It is useful for visualizing changes in data over time and creating dynamic plots.
+# 13. Plotly Dashboards: A module for creating interactive dashboards using Plotly visualizations. It is useful for creating data-driven applications and visualizing multiple datasets in one view.
+# 14. Plotly Themes: A module for customizing the appearance of Plotly visualizations using themes. It is useful for creating consistent and visually appealing plots.  
+# 15. Plotly Templates: A module for creating reusable templates for Plotly visualizations. It is useful for creating consistent and standardized plots across different projects.
+# 16. Plotly Layout: A module for customizing the layout of Plotly visualizations. It is useful for adjusting the appearance and organization of plots.
+# 17. Plotly Annotations: A module for adding annotations to Plotly visualizations. It is useful for adding context and explanations to plots.
+# 18. Plotly Legends: A module for customizing the legends of Plotly visualizations. It is useful for adjusting the appearance and organization of legends.
+# 19. Plotly Axes: A module for customizing the axes of Plotly visualizations. It is useful for adjusting the appearance and organization of axes.
+# 20. Plotly Grids: A module for creating grid layouts for Plotly visualizations. It is useful for organizing multiple plots in a structured format.
+
+
+
+
+# Thanks for your help! I really appreciate it.

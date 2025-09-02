@@ -1,0 +1,48 @@
+import pandas as pd
+import numpy as np
+import missingno as msno
+import matplotlib.pyplot as plt
+
+# Sample data
+data = {
+    'Age': [25, np.nan, 37, 29, np.nan, 40, 33],
+    'Salary': [50000, 60000, np.nan, 58000, 52000, np.nan, 61000],
+    'Experience': [1, 3, np.nan, 4, 2, np.nan, np.nan],
+    'Education': ['Bachelors', 'Masters', 'PhD', np.nan, 'Masters', 'PhD', 'Bachelors']
+}
+
+df = pd.DataFrame(data,index=['A', 'B', 'C', 'D', 'E', 'F', 'G'])
+print(df)
+
+msno.matrix(df)
+plt.title("Missing Data Matrix")
+plt.show()
+
+####################
+
+msno.heatmap(df)
+plt.title("Missing Data Correlation Heatmap")
+plt.show()
+# how to 
+
+###################
+
+msno.dendrogram(df)
+plt.title("Missing Data Dendrogram")
+plt.show()
+# how to identify missing data from dendrogram chart
+
+
+###################
+
+# box chart to show the missing data
+msno.boxplot(df)
+plt.title("Missing Data Box Plot")
+plt.show()
+# how to identify missing data from box chart
+# 1. Look for gaps or empty spaces in the box plot.
+# 2. Check the whiskers and outliers.
+# 3. Identify the median line and quartiles.
+# 4. Compare the box plot with the original data to see which values are missing.
+# 5. Use the box plot to identify potential outliers that may be related to missing data.
+
